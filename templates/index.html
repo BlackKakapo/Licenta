@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Disambiguation</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link href="sidebar.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<style>
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.sidebar {
+  color: white;
+  height: 100%;
+  width: 40%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(52, 58, 64);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: black;
+  display: block;
+  transition: 0.1s;
+}
+
+.sidebar a:hover {
+  color: black;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/*.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}*/
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+#text{
+	transition: margin-left .5s;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+</style>
+
+
+</head>
+<body>
+
+
+	<div id="mySidebar" class="sidebar" style="color: white">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" style="color: white;">×</a>
+
+	  <form method="POST" enctype="multipart/form-data" action="/" class="mx-4" style="margin-top: 5%">
+			<div class="form-group">
+				<div style="margin-bottom: 5%">
+					<input type="file" name="file" style="color: #fff">
+					<button type="submit" class="btn btn-light btn-group-lg" name="func" value="1">Deschide</button>			
+				</div>				
+				<br>
+			   	<label><h4>Cuvântul</h4></label>
+			    <input class="form-control" onfocus="this.value=''" type="text" value="{{word}}" name="word">
+			    <label class="mt-2"><h4>Propoziția</h4></label>
+			    <input class="form-control" placeholder="Opțional..." onfocus="this.value=''" type="text" value="{{sentence}}" name="sentence">
+			    <input type="hidden" name="text" value="{{text}}">		    			
+				</div>
+					<div class="container">
+			  			<div class="row justify-content-center">			  					
+			  				<button type="submit" class="btn btn-light btn-group-lg" name="func" value="2">Caută</button>
+			  			</div>
+					</div>
+		</form>
+		<div style="line-height: 1.6; font-family: 'Georgia', Times, serif; background-color: #756a75; border-radius: 15px;" class="mx-3 pb-1">
+			<h1 class="mt-3 mx-4">Definiții:</h1>
+			<h4 class="mt-3 mx-4">
+				{% for r in result %}
+					<p><b>{{word}}</b> - {{ r }}</p>
+				{% endfor %}
+			</h4>
+		</div>
+	</div>
+
+	<div id="main" style="margin-left: 40%">
+	  	<button class="btn btn-dark btn-group-lg" onclick="openNav()">Meniu</button>
+	  	<button class="btn btn-dark btn-group-lg" onclick="Mode('#EDD1B0','black')">ReadMode</button>
+	  	<button class="btn btn-dark btn-group-lg" onclick="Mode('#3b3b3b', 'white')">DarkMode</button>
+	  	<button class="btn btn-dark btn-group-lg" onclick="Mode('white', 'black')">SimpleMode</button>
+	</div>
+
+	<div id="text" class="font-weight-light mt-5" style="margin-left: 43%; margin-right: 10%">
+		<h4 style="line-height: 1.6; font-family: 'Georgia', Times, serif; text-align: justify;">{{text}}</h4>
+	</div>
+
+	<script>
+	function openNav() {
+	  	document.getElementById("mySidebar").style.width = "40%";
+	  	document.getElementById("main").style.marginLeft = "40%";
+	  	document.getElementById("text").style.marginLeft = "43%";
+	}
+	function closeNav() {
+	  	document.getElementById("mySidebar").style.width = "0";
+	  	document.getElementById("main").style.marginLeft= "0";
+	  	document.getElementById("text").style.marginLeft = "10%";
+	}
+
+	function Mode(color1, color2) {
+   		document.body.style.background = color1;
+   		document.body.style.color = color2;   		
+	}
+	document.addEventListener("DOMContentLoaded", function(event) { 
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+    });
+
+    window.onbeforeunload = function(e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+    };
+	</script>
+
+</body>
+</html>
